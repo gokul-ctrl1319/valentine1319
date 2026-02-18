@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Thangoo❤️</title>
+    <style>
+        :root { --pink: #ff4d6d; --skyblue: #87CEEB; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Arial', sans-serif; overflow: hidden; }
+        
+        .page { 
+            display: none; height: 100vh; width: 100vw; 
+            flex-direction: column; align-items: center; justify-content: center; 
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            text-align: center; color: white; padding: 20px; box-sizing: border-box;
+        }
+
+        /* BACKGROUNDS */
+        #loginPage { display: flex; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://thumbs.dreamstime.com/b/cute-romantic-background-valentine-s-day-i-love-you-card-declaration-love-cute-romantic-background-valentine-s-day-i-348718748.jpg'); }
+        #proposalPage { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://img.pikbest.com/backgrounds/20250106/glowing-heart-of-love-a-romantic-valentines-silhouette_11345116.jpg!sw800'); }
+        #successPage { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://static.vecteezy.com/system/resources/thumbnails/059/508/978/small/two-red-glitter-hearts-on-sparkling-silver-background-love-photo.jpg'); }
+        #quizPage1 { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://t4.ftcdn.net/jpg/18/28/12/63/360_F_1828126336_TzrAAyqJ8BniSmS735jNuuLmzzojmvmp.jpg'); }
+        #quizPage2 { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://st2.depositphotos.com/1765619/9655/i/950/depositphotos_96559754-stock-photo-blue-heart-and-many-red.jpg'); }
+        #thoughtPage { background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://img.freepik.com/free-vector/flat-design-wildflower-heart-background_23-2150534247.jpg'); }
+        
+        #cardSelectionPage, #finalPage { background: var(--skyblue) !important; color: #333; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+        .card { 
+            width: 85px; height: 120px; background: white; border-radius: 12px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            cursor: pointer; box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
+            border: 3px solid #5fb8db; transition: transform 0.3s ease-in-out; position: relative;
+        }
+        .card:hover { transform: scale(1.1); }
+        .card span { font-size: 2rem; }
+        .card-msg { font-size: 0.65rem; font-weight: bold; display: none; padding: 5px; text-align: center; }
+
+        /* PHOTO ROTATION LOGIC (Portrait to Landscape) */
+        .photo-container {
+            width: 320px; 
+            height: 200px; /* Landscape Frame */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 5px solid white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            background: #fff;
+        }
+
+        .final-photo { 
+            width: 200px; /* Height becomes width when rotated */
+            height: 320px; 
+            transform: rotate(-90deg); /* Photo-va landscape-ah thirupiyaachu */
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        #typewriter-text { font-size: 1.1rem; font-weight: bold; max-width: 90%; min-height: 70px; margin-top: 10px; line-height: 1.4; }
+        .emoji-burst { position: fixed; font-size: 3rem; z-index: 1000; pointer-events: none; animation: flyUp 2s ease-out forwards; }
+        @keyframes flyUp { 0% { transform: translateY(100vh); opacity: 1; } 100% { transform: translateY(-20vh) translateX(calc(-100px + 200px * var(--rand))); opacity: 0; } }
+
+        button { padding: 15px 30px; border-radius: 30px; border: none; background: var(--pink); color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        #noBtn { position: absolute; transition: 0.1s ease; background: #555; }
+        input, textarea { padding: 12px; border-radius: 10px; border: none; margin: 10px; width: 85%; max-width: 300px; color: #333; }
+        .song-btn { background: white; color: var(--pink); padding: 12px 25px; border-radius: 25px; font-weight: bold; border: 2px solid var(--pink); cursor: pointer; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <div id="loginPage" class="page">
+        <h1>Unlock your Valentine's card Thangoo🩵</h1>
+        <p style="color: #eee;">Nickname Thangoo🩵</p>
+        <input type="text" id="nickname" placeholder="Type here Thangoo🩵...">
+        <button onclick="checkNickname()">Unlock</button>
+    </div>
+
+    <div id="proposalPage" class="page">
+        <h1>Will you be my valentine ❤️?</h1>
+        <div style="position: relative; width: 100%; height: 50px;">
+            <button id="yesBtn" onclick="nextPage('successPage')">YES</button>
+            <button id="noBtn" onmouseover="toughNo()" onclick="toughNo()">NO</button>
+        </div>
+    </div>
+
+    <div id="successPage" class="page">
+        <h1>Thanks for being My Valentine! ❤️</h1>
+        <img src="https://media.tenor.com/duH5OTk8j5MAAAAM/pandalove-panda-beauty.gif" style="width:180px;">
+        <button onclick="nextPage('quizPage1')">Next</button>
+    </div>
+
+    <div id="quizPage1" class="page">
+        <h2>Thangoo namba first kiss date?</h2>
+        <input type="text" id="ans1" placeholder="Type here Thangoo🩵...">
+        <button onclick="handleQuiz1()">Submit</button>
+    </div>
+
+    <div id="quizPage2" class="page">
+        <h2>First outing dress color sollu pakkalam?</h2>
+        <input type="text" id="ans2" placeholder="Type here Thangoo🩵...">
+        <button onclick="handleQuiz2()">Submit</button>
+    </div>
+
+    <div id="thoughtPage" class="page">
+        <p>"I want you in my entire life even we are wrinkled♾️🤍🩵..."</p>
+        <textarea id="thoughts" placeholder="Type thoughts here..."></textarea>
+        <button onclick="nextPage('cardSelectionPage')">Conform panniralama❤️</button>
+    </div>
+
+    <div id="cardSelectionPage" class="page">
+        <h2 style="color: white; text-shadow: 1px 1px 5px rgba(0,0,0,0.2);">Pick the Correct Card Thangoo! 🩵</h2>
+        <div class="card-grid">
+            <div class="card" onclick="cardClick(this, false)"><span>💌</span><div class="card-msg" style="color:red">Marupadium try pannu Thangoo</div></div>
+            <div class="card" onclick="cardClick(this, true)"><span>💌</span><div class="card-msg" style="color:green">Love you Thangoo♾️🤍🩵</div></div>
+            <div class="card" onclick="cardClick(this, false)"><span>💌</span><div class="card-msg" style="color:red">Marupadium try pannu Thangoo</div></div>
+            <div class="card" onclick="cardClick(this, false)"><span>💌</span><div class="card-msg" style="color:red">Marupadium try pannu Thangoo</div></div>
+            <div class="card" onclick="cardClick(this, false)"><span>💌</span><div class="card-msg" style="color:red">Marupadium try pannu Thangoo</div></div>
+            <div class="card" onclick="cardClick(this, false)"><span>💌</span><div class="card-msg" style="color:red">Marupadium try pannu Thangoo</div></div>
+        </div>
+    </div>
+
+    <div id="finalPage" class="page">
+        <div class="photo-container">
+            <img src="https://i.ibb.co/7J2nYx0t/Snapchat-1067938069.jpg" class="final-photo">
+        </div>
+        
+        <div id="typewriter-text"></div>
+        <button class="song-btn" onclick="playSong()">🎵 Play "Enadhuyirey"🩵</button>
+        <audio id="bgMusic" src="https://files.catbox.moe/m1fx5j.mp3"></audio>
+        <h2 style="font-size: 1rem; margin-top: 10px;">Together Forever♾️🤍🩵</h2>
+    </div>
+
+    <script>
+        function nextPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function checkNickname() {
+            if(document.getElementById('nickname').value.toLowerCase().trim() === 'junju') nextPage('proposalPage');
+            else alert("Correct nickname type pannu Thangoo🥹!");
+        }
+
+        function toughNo() {
+            const btn = document.getElementById('noBtn');
+            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+        }
+
+        function handleQuiz1() {
+            if(document.getElementById('ans1').value.toLowerCase().includes('july 15')) {
+                spawnEmoji('💋', 50);
+                setTimeout(() => nextPage('quizPage2'), 3000);
+            } else alert("Tappu Thangoo🥹!");
+        }
+
+        function handleQuiz2() {
+            if(document.getElementById('ans2').value.toLowerCase().includes('blue')) {
+                spawnEmoji('💙', 50);
+                setTimeout(() => nextPage('thoughtPage'), 3000);
+            } else alert("Nyabagam illaya🥹?");
+        }
+
+        function spawnEmoji(emoji, count) {
+            for(let i=0; i<count; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'emoji-burst';
+                    el.innerText = emoji;
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.setProperty('--rand', Math.random());
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 2000);
+                }, i * 50);
+            }
+        }
+
+        function cardClick(el, isCorrect) {
+            const icon = el.querySelector('span');
+            const msg = el.querySelector('.card-msg');
+            icon.style.display = 'none';
+            msg.style.display = 'block';
+
+            if(isCorrect) {
+                setTimeout(() => { nextPage('finalPage'); startTypewriter(); }, 1500);
+            } else {
+                setTimeout(() => {
+                    icon.style.display = 'block';
+                    msg.style.display = 'none';
+                }, 1500);
+            }
+        }
+
+        function playSong() {
+            document.getElementById('bgMusic').play();
+        }
+
+        function startTypewriter() {
+            const fullText = "Sorry for all thangoo yennala unna veruka mudiyala...🤍🩵innum love thaan aadigam aagudhu🥹 yenkuda kadaisi vara irupiya?";
+            const words = fullText.split(" ");
+            let i = 0;
+            const container = document.getElementById("typewriter-text");
+            container.innerHTML = "";
+            const interval = setInterval(() => {
+                if (i < words.length) { container.innerHTML += words[i] + " "; i++; }
+                else clearInterval(interval);
+            }, 300);
+        }
+    </script> 
+</body>
+</html>
